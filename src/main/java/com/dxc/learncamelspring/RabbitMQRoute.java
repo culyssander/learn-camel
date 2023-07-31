@@ -19,11 +19,12 @@ public class RabbitMQRoute extends RouteBuilder {
 //                .log("After enrichment: ${body}");
 
         from("direct:send-to-queue")
-                .id("direct-id-send-to-queue")
+                .routeId("direct-route-id-send-to-queue")
                 .log("LOG: ${body}")
                 .marshal().json(JsonLibrary.Jackson, MyBean.class)
                 .log("LOG AFTER: ${body}")
                 .to("rabbitmq:amq.direct?queue=test&autoDelete=false")
+                .id("id-rabbitmq")
                 .log("DDDDDDDDDDDDD ${body}")
                 .unmarshal().json(JsonLibrary.Jackson, MyBean.class)
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
